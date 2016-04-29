@@ -21,8 +21,9 @@ var CameraController = function() {
         },
         openCamera: function(selection) {
 
-            var srcType = Camera.PictureSourceType.CAMERA;
-            // var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+            // Uncomment either line to change the source for photo
+            // var srcType = Camera.PictureSourceType.CAMERA;
+            var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
             var options = self.setOptions(srcType);
             var func = self.submitPlate;
 
