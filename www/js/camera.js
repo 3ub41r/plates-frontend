@@ -34,8 +34,7 @@ var CameraController = function() {
 
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
 
-                self.displayImage(imageUri);
-                // You may choose to copy the picture, save it somewhere, or upload.
+                // self.displayImage(imageUri);
                 func(imageUri);
 
             }, function cameraError(error) {
@@ -63,25 +62,19 @@ var CameraController = function() {
             var ft = new FileTransfer();
             ft.upload(imgUri, encodeURI(serverUrl), function fileUploadSuccess(result) {
                 console.log(result);
+                self.bindPlateInfo(JSON.parse(result.response));
+
             }, function fileUploadSuccess(error) {
                 console.log('An error occured when sending the plate: ');
                 console.log(error);
             }, options);
         },
-        createNewFileEntry: function(imgUri) {
-            window.resolveLocalFileSystemURL(cordova.file.cacheDirectory, function success(dirEntry) {
+        bindPlateInfo: function(plate) {
 
-                // JPEG file
-                dirEntry.getFile("tempFile.jpeg", { create: true, exclusive: false }, function (fileEntry) {
+            document.getElementById('plate-no').textContent = plate.plate_number;
+            document.getElementById('name').textContent = plate.name;
+            document.getElementById('matric-no').textContent = plate.matric_no;
 
-                    // Do something with it, like write to it, upload it, etc.
-                    // writeFile(fileEntry, imgUri);
-                    console.log("got file: " + fileEntry.fullPath);
-                    // displayFileData(fileEntry.fullPath, "File copied to");
-
-                }, onErrorCreateFile);
-
-            }, onErrorResolveUrl);
         }
     }
     cameraController.initialize();
