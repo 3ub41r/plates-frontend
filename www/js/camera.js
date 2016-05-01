@@ -4,7 +4,7 @@ var CameraController = function() {
         self: null,
         initialize: function() {
             self = this;
-            this.bindCamera();
+            this.bindButton();
         },
         setOptions: function(srcType) {
             var options = {
@@ -20,18 +20,19 @@ var CameraController = function() {
             }
             return options;
         },
-        openCamera: function(selection) {
+        openCamera: function() {
+            self.pickPhoto('camera');
+        },
+        openGallery: function() {
+            self.pickPhoto();
+        },
+        pickPhoto: function(sType) {
+            var srcType = (sType != null && sType == 'camera') 
+            ? Camera.PictureSourceType.CAMERA
+            : Camera.PictureSourceType.SAVEDPHOTOALBUM;
 
-            // Uncomment either line to change the source for photo
-            // var srcType = Camera.PictureSourceType.CAMERA;
-            var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
             var options = self.setOptions(srcType);
             var func = self.submitPlate;
-
-            if (selection == 'camera-thmb') {
-                options.targetHeight = 100;
-                options.targetWidth = 100;
-            }
 
             navigator.camera.getPicture(function cameraSuccess(imageUri) {
 
@@ -48,16 +49,17 @@ var CameraController = function() {
             var elem = document.getElementById('plate-img');
             elem.src = imgUri;
         },
-        bindCamera: function() {
-            console.log('This is from bindCamera');
+        bindButton: function() {
             cameraBtn = document.querySelector('#camera-btn');
+            galleryBtn = document.querySelector('#gallery-btn');
             cameraBtn.addEventListener('click', self.openCamera, false);
+            galleryBtn.addEventListener('click', self.openGallery, false);
         },
         submitPlate: function(imgUri) {
             var options = new FileUploadOptions();
             options.fileKey = 'image';
             options.fileName = imgUri.substr(imgUri.lastIndexOf('/') + 1);
-            
+
             var ft = new FileTransfer();
             ft.upload(imgUri, encodeURI(BACKEND_URL), function fileUploadSuccess(result) {
                 console.log(result);
