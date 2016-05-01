@@ -1,4 +1,5 @@
 var CameraController = function() {
+    const BACKEND_URL = 'http://192.168.43.89/src/public/recognize';
     var cameraController = {
         self: null,
         initialize: function() {
@@ -27,7 +28,7 @@ var CameraController = function() {
             var options = self.setOptions(srcType);
             var func = self.submitPlate;
 
-            if (selection == "camera-thmb") {
+            if (selection == 'camera-thmb') {
                 options.targetHeight = 100;
                 options.targetWidth = 100;
             }
@@ -38,7 +39,7 @@ var CameraController = function() {
                 func(imageUri);
 
             }, function cameraError(error) {
-                console.debug("Unable to obtain picture: " + error, "app");
+                console.debug('Unable to obtain picture: ' + error, 'app');
 
             }, options);
         }, 
@@ -53,14 +54,14 @@ var CameraController = function() {
             cameraBtn.addEventListener('click', self.openCamera, false);
         },
         submitPlate: function(imgUri) {
-            var serverUrl = 'http://192.168.33.10/src/public/recognize';
+            // var serverUrl = 'http://192.168.33.10/src/public/recognize';
             var options = new FileUploadOptions();
             options.fileKey = 'image';
             options.fileName = imgUri.substr(imgUri.lastIndexOf('/') + 1);
             // options.mimeType = 'text/plain';
 
             var ft = new FileTransfer();
-            ft.upload(imgUri, encodeURI(serverUrl), function fileUploadSuccess(result) {
+            ft.upload(imgUri, encodeURI(BACKEND_URL), function fileUploadSuccess(result) {
                 console.log(result);
                 self.bindPlateInfo(JSON.parse(result.response));
 
