@@ -54,12 +54,10 @@ var CameraController = function() {
             cameraBtn.addEventListener('click', self.openCamera, false);
         },
         submitPlate: function(imgUri) {
-            // var serverUrl = 'http://192.168.33.10/src/public/recognize';
             var options = new FileUploadOptions();
             options.fileKey = 'image';
             options.fileName = imgUri.substr(imgUri.lastIndexOf('/') + 1);
-            // options.mimeType = 'text/plain';
-
+            
             var ft = new FileTransfer();
             ft.upload(imgUri, encodeURI(BACKEND_URL), function fileUploadSuccess(result) {
                 console.log(result);
