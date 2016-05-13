@@ -72,7 +72,7 @@ var CameraController = function() {
 
             }, function fileUploadSuccess(error) {
                 console.log(error);
-                $('#error-alert').text('Exception' + error.exception).removeClass('hidden');
+                $('#error-alert').text('Exception: ' + error.exception).removeClass('hidden');
                 $loading.addClass('hidden');
             }, options);
         },
