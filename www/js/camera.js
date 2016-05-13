@@ -1,5 +1,4 @@
 var CameraController = function() {
-    const BACKEND_URL = 'http://192.168.43.89/src/public/recognize';
     var cameraController = {
         self: null,
         initialize: function() {
@@ -60,14 +59,21 @@ var CameraController = function() {
             options.fileKey = 'image';
             options.fileName = imgUri.substr(imgUri.lastIndexOf('/') + 1);
 
+            var backend_url = document.getElementById('url').value || 'http://localhost/src/public/recognize';
+            // Show loading indicator
+            var $loading = $('#loading');
+            $loading.removeClass('hidden');
+
             var ft = new FileTransfer();
-            ft.upload(imgUri, encodeURI(BACKEND_URL), function fileUploadSuccess(result) {
-                console.log(result);
+            ft.upload(imgUri, encodeURI(backend_url), function fileUploadSuccess(result) {
+                console.log(self.backend_url);
                 self.bindPlateInfo(JSON.parse(result.response));
+                $loading.addClass('hidden');
 
             }, function fileUploadSuccess(error) {
-                console.log('An error occured when sending the plate: ');
                 console.log(error);
+                $('#error-alert').text('Exception' + error.exception).removeClass('hidden');
+                $loading.addClass('hidden');
             }, options);
         },
         bindPlateInfo: function(plate) {

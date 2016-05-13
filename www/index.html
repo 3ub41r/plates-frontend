@@ -24,7 +24,19 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <div class="form-group">
+                    <label>API URL</label>
+                    <input type="text" name="url" id="url" 
+                    value="http://192.168.43.89/src/public/recognize" 
+                    class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <h3>Plate Number Detector</h3>
+
+                <p id="error-alert" class="alert alert-danger hidden"></p>
 
                 <dl class="dl-horizontal">
                     <dt>Plate No.</dt>
@@ -45,6 +57,10 @@
                         <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>  Gallery
                     </button>
                 </div>
+                <span id="loading" class="btn btn-link hidden">
+                    <img src="img/loader.gif">
+                    Processing...
+                </span>
             </div>
         </div>
     </div>
