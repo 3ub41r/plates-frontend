@@ -55,25 +55,32 @@ var CameraController = function() {
             galleryBtn.addEventListener('click', self.openGallery, false);
         },
         submitPlate: function(imgUri) {
-            var options = new FileUploadOptions();
-            options.fileKey = 'image';
-            options.fileName = imgUri.substr(imgUri.lastIndexOf('/') + 1);
 
-            var backend_url = document.getElementById('url').value || 'http://localhost/src/public/recognize';
+            // Reset
+            var $errorAlert = $('#error-alert');
+            $errorAlert.text('').addClass('hidden');
             // Show loading indicator
             var $loading = $('#loading');
             $loading.removeClass('hidden');
 
+            var options = new FileUploadOptions();
+            options.fileKey = 'image';
+            options.fileName = imgUri.substr(imgUri.lastIndexOf('/') + 1);
+            var backend_url = document.getElementById('url').value || 'http://localhost/src/public/recognize';
+
             var ft = new FileTransfer();
-            ft.upload(imgUri, encodeURI(backend_url), function fileUploadSuccess(result) {
+            ft.upload(imgUri, encodeURI(backend_url), function success(result) {
+                
                 console.log(self.backend_url);
                 self.bindPlateInfo(JSON.parse(result.response));
                 $loading.addClass('hidden');
 
-            }, function fileUploadSuccess(error) {
+            }, function error(error) {
+                
                 console.log(error);
                 $('#error-alert').text('Exception: ' + error.exception).removeClass('hidden');
                 $loading.addClass('hidden');
+                
             }, options);
         },
         bindPlateInfo: function(plate) {
